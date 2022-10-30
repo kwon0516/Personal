@@ -1,13 +1,16 @@
-#include <iostream>
+#include <stdio.h>
 
 int main()
 {
-    std::cout << "Hello, World!" << std::endl;
-
-    for (int i = 0; i <= 10; i++)
+    int a = 10;
+    int b = 20;
+    int c;
+    c = a + b;
+    printf("a + b = %d\n", c);
+    for (int i = 1; i < 10; i++)
     {
-        std::cout << i << std::endl;
+        printf("C = %d\n", c-i);
     }
-    
+
     return 0;
 }
