@@ -1,16 +1,24 @@
-#include <stdio.h>
+#include <iostream>
+#include <vector>
+
+void Add(int n1 = 0, int n2 = 0)
+{
+    std::cout << "↓Add result↓" << std::endl;
+    std::cout << n1 * n2 << std::endl;
+}
+
+void Min(int n1 = 0, int n2 = 0)
+{
+    std::cout << "↓Min result↓" << std::endl;
+    std::cout << n1 * n2 << std::endl;
+}
 
 int main()
 {
-    int a = 10;
-    int b = 20;
-    int c;
-    c = a + b;
-    printf("a + b = %d\n", c);
-    for (int i = 1; i < 10; i++)
-    {
-        printf("C = %d\n", c-i);
-    }
+    int n1 = 5;
+    int n2 = 8;
+
+    void (*arr)[2] = {Add, Min};
 
     return 0;
 }
