@@ -1,4 +1,6 @@
-print("Hello, World!")
+def a(str):
+    str = "asd"
+    return str
 
-for i in range(11):
-    print(i)
+b = a;
+print(b)
