@@ -1,5 +1,4 @@
 #include <iostream>
-#include <vector>
 
 void Add(int n1, int n2) {std::cout << n1 + n2 << std::endl;}
 void Min(int n1, int n2) {std::cout << n1 - n2 << std::endl;}
