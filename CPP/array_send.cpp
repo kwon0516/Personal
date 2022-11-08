@@ -1,26 +1,20 @@
 #include <iostream>
 
-enum Enu
+void Display(std::string *arr, int length)
 {
-    ONE,
-    TWO,
-    THREE,
-    FOUR,
-    FIVE
-};
+    for (int i = 0; i != length; i++)
+    {
+        std::cout << arr[i];
+    }
+    std::cout << std::endl;
+}
 
 int main()
 {
-    int n1 = 1;
-    switch (n1)
-    {
-    case ONE:
-        std::cout << "one" << std::endl;
-        break;
+    std::string arr[] = {"Hello", ", ", "World", "!"};
+    int length = sizeof(arr) / sizeof(std::string);
+
+    Display(arr, length);
     
-    default:
-        std::cout << "false" << std::endl;
-        break;
-    }    
     return 0;
 }
