@@ -1,45 +1,18 @@
 #include <iostream>
-
-struct Animal
-{
-    std::string name;
-    int age;
-    int health = 100;
-    int food = 100;
-    int clean = 100;
-
-    void Play()
-    {
-        health += 10;
-        food -= 20;
-        clean -= 10;
-    }
-
-    void ShowState()
-    {
-        std::cout << "name : " << name << std::endl;
-        std::cout << "age : " << age << std::endl;
-        std::cout << "health : " << health << std::endl;
-        std::cout << "food : " << food << std::endl;
-        std::cout << "clean : " << clean << std::endl;
-    }
-};
-
+#include <stdio.h>
 
 int main()
 {
-    Animal poppy;
+    std::string str;
+    long num = 123456789;
+    long n = 10;
 
-    Animal *ptr_arr[10];
-
-    poppy.name = "poppy";
-    poppy.age = 10;
-
-    poppy.Play();
-
-    poppy.ShowState();
-
+    std::cout << num << std::endl;
+    std::cout << n << std::endl;
+    printf("%d \n", num);
+    printf("%ld \n", num);
+    printf("%d \n", n);
+    printf("%ld \n", n);
     
-
     return 0;
 }
