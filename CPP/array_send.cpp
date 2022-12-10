@@ -2,6 +2,8 @@
 
 void Display(std::string *arr, int length)
 {
+    arr[0] = "asd";
+    arr[1] = "3f2";
     for (int i = 0; i != length; i++)
     {
         std::cout << arr[i];

@@ -1,39 +1,16 @@
 #include <iostream>
 
-class Singleton
-{
-private:
-    static Singleton *instance;
-    int num;
-
-public:
-    static Singleton &GetInstance()
-    {
-        if (instance == NULL)
-        {
-            std::cout << "create new instance" << std::endl;
-            instance = new Singleton();
-        }
-        return *instance;        
-    }
-
-    void ChangeNum(int n) {num = n;};
-
-    void PrintNUm() {std::cout << num << std::endl;};
-};
-
-Singleton *Singleton::instance = nullptr;
-
 int main()
 {
-    Singleton &ref1 = Singleton::GetInstance();
-    Singleton &ref2 = Singleton::GetInstance();
+	int x, y;
 
-    ref1.ChangeNum(5);
-    ref1.PrintNUm();
-    ref2.PrintNUm();
+	std::cin >> x;
+	std::cin >> y;
 
-    
-    
-    return 0;
+	if (x > 0 && y > 0) {std::cout << 1;}
+	else if (x < 0 && y > 0) {std::cout << 2;}
+	else if (x < 0 && y < 0) {std::cout << 3;}
+	else {std::cout << 4;}
+	
+	return 0;
 }
