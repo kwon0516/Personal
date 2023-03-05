@@ -1,69 +1,37 @@
 #include <iostream>
 
-class Marine
+class C
 {
-	int hp_;
-	int coord_x_, coord_y_;
-	int damage_;
-	bool is_dead_;
-
-public:
-	Marine();
-	Marine(int x, int y);
-
-	int attack();
-	void be_attacked(int damage_earn);
-	void move(int x, int y);
-
-	void show_status();
+	public:
+	C();
+	~C();
+	void DefaultFunction(bool b = false);
 };
 
-Marine::Marine()
+C::C()
 {
-	hp_ = 50;
-	coord_x_ = coord_y_ = 0;
-	damage_ = 5;
-	is_dead_ = false;
-	show_status();
+	std::cout << "Create!" << std::endl;
 }
 
-Marine::Marine(int x, int y)
+C::~C()
 {
-	coord_x_ = x;
-	coord_y_ = y;
-	hp_ = 50;
-	damage_ = 5;
-	is_dead_ = false;
-	show_status();
+	std::cout << "Destroy!" << std::endl;
 }
 
-void Marine::move(int x, int y)
+void C::DefaultFunction(bool b)
 {
-	coord_x_ = x;
-	coord_y_ = y;
+	if (b) std::cout << "True" << std::endl;
+	else std::cout << "False" << std::endl;
 }
-
-int Marine::attack() { return damage_; }
-
-void Marine::be_attacked(int damage_earn)
-{
-	hp_ -= damage_earn;
-	
-	if (!hp_) is_dead_ = true;
-}
-
-void Marine::show_status()
-{
-	std::cout << " *** Marine *** " << std::endl;
-	std::cout << " Location : ( " << coord_x_ << " , " << coord_y_ << " ) " << std::endl;
-	std::cout << " HP : " << hp_ << std::endl;
-}
-
-
 
 int main()
 {
-	Marine* marines[100];
+	C c;
 	
+	c.DefaultFunction();
+	c.DefaultFunction(true);
+	
+	std::cout << '1' << std::endl;
 	return 0;
+	std::cout << '2' << std::endl;
 }
