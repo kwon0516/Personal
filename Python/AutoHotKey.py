@@ -6,7 +6,7 @@ from PyQt5 import uic
 from PyQt5 import QtGui
 import pyautogui
 
-form_class = uic.loadUiType("E:/0_Git/Personal/Python/AutoKey.ui")[0]
+form_class = uic.loadUiType("E:/Git/Personal/Python/AutoKey.ui")[0]
 
 class WindowClass(QMainWindow, form_class):
     def __init__(self):
