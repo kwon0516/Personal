@@ -4,6 +4,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtTest import *
 from PyQt5 import uic
 from PyQt5 import QtGui
+from PyQt5.QtCore import QTimer, QTime
 import pyautogui
 
 form_class = uic.loadUiType("E:/Git/Personal/Python/AutoKey.ui")[0]
@@ -12,7 +13,7 @@ class WindowClass(QMainWindow, form_class):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-        self.setWindowIcon(QtGui.QIcon('E:/0_Git/Personal/Python/AutoIcon-removebg-preview.png'))
+        self.setWindowIcon(QtGui.QIcon('E:/Git/Personal/Python/AutoIcon-removebg-preview.png'))
         self.setWindowTitle('AutoHotKey')
         self.setFixedSize(QSize(295, 195))
         
@@ -23,11 +24,21 @@ class WindowClass(QMainWindow, form_class):
         self.key = ""
         self.cycle = 0
         
-        self.trayIcon = QSystemTrayIcon(QtGui.QIcon('E:/0_Git/Personal/Python/AutoIcon-removebg-preview.png'), app)
+        self.trayIcon = QSystemTrayIcon(QtGui.QIcon('E:/Git/Personal/Python/AutoIcon-removebg-preview.png'), app)
         self.trayIcon.setToolTip("상태 : Stop")
-        self.TrayInit()        
+        self.TrayInit()
 
         pyautogui.FAILSAFE = False
+        
+        # ================ 프로그램 실행 시 자동 시작 ================ #
+        self.key = self.key = self.comboBox_SelectKey.currentText()
+        self.cycle = int(self.lineEdit_Cycle.text())
+        
+        self.timer = QTimer(self)
+        self.timer.start(1500)
+        self.timer.timeout.connect(self.AutoKeyStart)
+        
+        # ================ 프로그램 실행 시 자동 시작 ================ #
     
     def TrayInit(self):
         show_action = QAction("Show", self)
@@ -38,7 +49,6 @@ class WindowClass(QMainWindow, form_class):
         tray_menu.addAction(show_action)
         tray_menu.addAction(hide_action)
         self.trayIcon.setContextMenu(tray_menu)
-        
         self.trayIcon.show()
     
     def closeEvent(self, event):
