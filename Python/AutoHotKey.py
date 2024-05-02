@@ -4,7 +4,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtTest import *
 from PyQt5 import uic
 from PyQt5 import QtGui
-from PyQt5.QtCore import QTimer, QTime
+from PyQt5.QtCore import QObject, QTimer, QTime
 import pyautogui
 
 form_class = uic.loadUiType("E:/Git/Personal/Python/AutoKey.ui")[0]
@@ -12,6 +12,10 @@ form_class = uic.loadUiType("E:/Git/Personal/Python/AutoKey.ui")[0]
 class WindowClass(QMainWindow, form_class):
     def __init__(self):
         super().__init__()
+        
+        Th1 = Thread(self)
+        Th1.start()
+        
         self.setupUi(self)
         self.setWindowIcon(QtGui.QIcon('E:/Git/Personal/Python/AutoIcon-removebg-preview.png'))
         self.setWindowTitle('AutoHotKey')
@@ -98,6 +102,59 @@ class WindowClass(QMainWindow, form_class):
         self.status_run = False
         self.trayIcon.setToolTip("상태 : Stop")
         self.label_Status.setText("상태 : Stop")
+
+
+class Thread(QThread):
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.parent = parent
+        self.curX = 9999
+        self.curY = 9999
+        
+    def run(self):
+        while(True):
+            # a = "X : " + str(pyautogui.position().x) + " | Y : " + str(pyautogui.position().y)
+            # print(a)
+            self.curX = pyautogui.position().x
+            self.curY = pyautogui.position().y
+            if (self.curX == 0 and self.curY == 0):
+                self.CurPosLeftTop()
+            elif (self.curX == 1919 and self.curY == 0):
+                self.CurPosRightTop()
+            elif (self.curX == 0 and self.curY == 1199):
+                self.CurPosLeftBottom()
+            elif (self.curX == 1919 and self.curY == 1199):
+                self.CurPosRightBottom()
+            
+                
+
+    # Chrome
+    def CurPosLeftTop(self):
+            pyautogui.keyDown("winleft")
+            pyautogui.keyDown("1")
+            pyautogui.keyUp("1")
+            pyautogui.keyUp("winleft")
+        
+    # Visual Studio
+    def CurPosRightTop(self):
+        pyautogui.keyDown("winleft")
+        pyautogui.keyDown("2")
+        pyautogui.keyUp("2")
+        pyautogui.keyUp("winleft")
+
+    # SoruceTree
+    def CurPosLeftBottom(self):
+            pyautogui.keyDown("winleft")
+            pyautogui.keyDown("4")
+            pyautogui.keyUp("4")
+            pyautogui.keyUp("winleft")
+    
+    # Go Desktop
+    def CurPosRightBottom(self):
+        pyautogui.keyDown("winleft")
+        pyautogui.keyDown("d")
+        pyautogui.keyUp("d")
+        pyautogui.keyUp("winleft")
 
 
 if __name__ == "__main__":
