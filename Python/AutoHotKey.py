@@ -41,7 +41,6 @@ class WindowClass(QMainWindow, form_class):
         self.timer = QTimer(self)
         self.timer.start(1500)
         self.timer.timeout.connect(self.AutoKeyStart)
-        
         # ================ 프로그램 실행 시 자동 시작 ================ #
     
     def TrayInit(self):
@@ -108,25 +107,43 @@ class Thread(QThread):
     def __init__(self, parent):
         super().__init__(parent)
         self.parent = parent
+        self.zero = 0
         self.curX = 9999
         self.curY = 9999
+        self.actionFlag = True
+        
+        # print(app.desktop().screen(0).screen().name())
+
+        # while문 안으로 이동(듀얼모니터 대응)
+        # self.rect = app.desktop().screenGeometry()
+        # self.width, self.height = self.rect.width() - 1, self.rect.height() - 1
+        # print(self.width, self.height)
         
     def run(self):
         while(True):
-            # a = "X : " + str(pyautogui.position().x) + " | Y : " + str(pyautogui.position().y)
-            # print(a)
+            self.rect = app.desktop().screenGeometry()
+            self.width, self.height = self.rect.width() - 1, self.rect.height() - 1
+            
             self.curX = pyautogui.position().x
             self.curY = pyautogui.position().y
-            if (self.curX == 0 and self.curY == 0):
-                self.CurPosLeftTop()
-            elif (self.curX == 1919 and self.curY == 0):
-                self.CurPosRightTop()
-            elif (self.curX == 0 and self.curY == 1199):
-                self.CurPosLeftBottom()
-            elif (self.curX == 1919 and self.curY == 1199):
-                self.CurPosRightBottom()
+
+            # print(app.screenAt(QPoint(0,0)).name())
+            # QTest.qWait(1000)
             
-                
+            if (self.actionFlag and self.curX == self.zero and self.curY == self.zero):
+                self.CurPosLeftTop()
+                self.actionFlag = False
+            elif (self.actionFlag and self.curX >= self.width and self.curY == self.zero):
+                self.CurPosRightTop()
+                self.actionFlag = False
+            elif (self.actionFlag and self.curX == self.zero and self.curY >= self.height):
+                self.CurPosLeftBottom()
+                self.actionFlag = False
+            elif (self.actionFlag and self.curX >= self.width and self.curY >= self.height):
+                self.CurPosRightBottom()
+                self.actionFlag = False
+            elif (self.curX > self.zero and self.curY > self.zero):
+                self.actionFlag = True
 
     # Chrome
     def CurPosLeftTop(self):
