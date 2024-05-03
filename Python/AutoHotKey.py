@@ -4,8 +4,9 @@ from PyQt5.QtCore import *
 from PyQt5.QtTest import *
 from PyQt5 import uic
 from PyQt5 import QtGui
-from PyQt5.QtCore import QObject, QTimer, QTime
+from PyQt5.QtCore import QEvent, QObject, QTimer, QTime
 import pyautogui
+from pynput import keyboard
 
 form_class = uic.loadUiType("E:/Git/Personal/Python/AutoKey.ui")[0]
 
@@ -13,9 +14,8 @@ class WindowClass(QMainWindow, form_class):
     def __init__(self):
         super().__init__()
         
-        Th1 = Thread(self)
-        Th1.start()
-        
+        self.Thread_HotCorner = Thread(self)
+        self.Thread_HotCorner.start()
         self.setupUi(self)
         self.setWindowIcon(QtGui.QIcon('E:/Git/Personal/Python/AutoIcon-removebg-preview.png'))
         self.setWindowTitle('AutoHotKey')
@@ -46,15 +46,32 @@ class WindowClass(QMainWindow, form_class):
     def TrayInit(self):
         show_action = QAction("Show", self)
         hide_action = QAction("Hide", self)
+        exit_action = QAction("Exit", self)
         show_action.triggered.connect(self.show)
         hide_action.triggered.connect(self.hide)
+        exit_action.triggered.connect(self.closeEvent)
         tray_menu = QMenu()
         tray_menu.addAction(show_action)
         tray_menu.addAction(hide_action)
+        tray_menu.addAction(exit_action)
         self.trayIcon.setContextMenu(tray_menu)
         self.trayIcon.show()
+        self.trayIcon.activated.connect(self.DoubleClickedTrayIcon)
+    
+    def DoubleClickedTrayIcon(self, reson):
+        if (reson == QSystemTrayIcon.DoubleClick):
+            self.showNormal()
+            # if (self.isVisible()):
+            #     self.show()
+    
+    def changeEvent(self, event):
+        if (event.type() == QEvent.WindowStateChange):
+            if (self.windowState() & Qt.WindowMinimized):
+                self.showMinimized()
+                self.hide()
     
     def closeEvent(self, event):
+        self.Thread_HotCorner.StopThread()
         self.trayIcon.hide()
         sys.exit()
         
@@ -79,7 +96,7 @@ class WindowClass(QMainWindow, form_class):
         else:
             self.AutoKeyStart()
 
-    def AutoKeyStart(self):        
+    def AutoKeyStart(self):
         self.cycle *= 60000
         self.comboBox_SelectKey.setEnabled(False)
         self.lineEdit_Cycle.setEnabled(False)
@@ -101,8 +118,20 @@ class WindowClass(QMainWindow, form_class):
         self.status_run = False
         self.trayIcon.setToolTip("상태 : Stop")
         self.label_Status.setText("상태 : Stop")
+    
+    def keyPressEvent(self, e):
+        str;
+        inputASCII = int(e.key())
+        if inputASCII == 16777252:
+            print("Capslock")
+        
+        print(int(e.key()))
+        # print(chr(int(e.key())))
+        
+        # print(type(e.text()))
+        print("===========")
 
-
+    
 class Thread(QThread):
     def __init__(self, parent):
         super().__init__(parent)
@@ -111,8 +140,10 @@ class Thread(QThread):
         self.curX = 9999
         self.curY = 9999
         self.actionFlag = True
+        self.ThreadFlag = True
         
         # print(app.desktop().screen(0).screen().name())
+        # print(app.screenAt(QPoint(0,0)).name())
 
         # while문 안으로 이동(듀얼모니터 대응)
         # self.rect = app.desktop().screenGeometry()
@@ -120,17 +151,16 @@ class Thread(QThread):
         # print(self.width, self.height)
         
     def run(self):
-        while(True):
+        while(self.ThreadFlag):
             self.rect = app.desktop().screenGeometry()
             self.width, self.height = self.rect.width() - 1, self.rect.height() - 1
             
             self.curX = pyautogui.position().x
             self.curY = pyautogui.position().y
 
-            # print(app.screenAt(QPoint(0,0)).name())
-            # QTest.qWait(1000)
-            
-            if (self.actionFlag and self.curX == self.zero and self.curY == self.zero):
+            if (self.curX > self.zero and self.curY > self.zero):
+                self.actionFlag = True
+            elif (self.actionFlag and self.curX == self.zero and self.curY == self.zero):
                 self.CurPosLeftTop()
                 self.actionFlag = False
             elif (self.actionFlag and self.curX >= self.width and self.curY == self.zero):
@@ -142,8 +172,9 @@ class Thread(QThread):
             elif (self.actionFlag and self.curX >= self.width and self.curY >= self.height):
                 self.CurPosRightBottom()
                 self.actionFlag = False
-            elif (self.curX > self.zero and self.curY > self.zero):
-                self.actionFlag = True
+    
+    def StopThread(self):
+        self.ThreadFlag = False
 
     # Chrome
     def CurPosLeftTop(self):
