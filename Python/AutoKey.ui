@@ -154,7 +154,7 @@
      </font>
     </property>
     <property name="text">
-     <string>시작</string>
+     <string>None</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_hotkey_0_2">
@@ -175,7 +175,7 @@
      </font>
     </property>
     <property name="text">
-     <string>시작</string>
+     <string>None</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_hotkey_0_0">
@@ -196,7 +196,7 @@
      </font>
     </property>
     <property name="text">
-     <string>시작</string>
+     <string>None</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_hotkey_1_2">
@@ -217,7 +217,7 @@
      </font>
     </property>
     <property name="text">
-     <string>시작</string>
+     <string>None</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_hotkey_1_0">
@@ -238,7 +238,7 @@
      </font>
     </property>
     <property name="text">
-     <string>시작</string>
+     <string>None</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_hotkey_1_1">
@@ -259,7 +259,7 @@
      </font>
     </property>
     <property name="text">
-     <string>시작</string>
+     <string>None</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_hotkey_2_2">
@@ -280,7 +280,7 @@
      </font>
     </property>
     <property name="text">
-     <string>시작</string>
+     <string>None</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_hotkey_2_0">
@@ -301,7 +301,7 @@
      </font>
     </property>
     <property name="text">
-     <string>시작</string>
+     <string>None</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_hotkey_2_1">
@@ -322,7 +322,7 @@
      </font>
     </property>
     <property name="text">
-     <string>시작</string>
+     <string>None</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_hotkey_3_1">
@@ -343,7 +343,7 @@
      </font>
     </property>
     <property name="text">
-     <string>시작</string>
+     <string>None</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_hotkey_3_2">
@@ -364,7 +364,7 @@
      </font>
     </property>
     <property name="text">
-     <string>시작</string>
+     <string>None</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_hotkey_3_0">
@@ -385,7 +385,7 @@
      </font>
     </property>
     <property name="text">
-     <string>시작</string>
+     <string>None</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_Exit">
