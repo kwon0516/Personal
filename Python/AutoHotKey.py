@@ -1,11 +1,13 @@
+import os
 import sys
+import pyautogui
+import configparser
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtTest import *
 from PyQt5 import uic
 from PyQt5 import QtGui
 from PyQt5.QtCore import QEvent, QObject, QTimer, QTime
-import pyautogui
 from pynput import keyboard
 
 form_class = uic.loadUiType("D:/Git/Personal/Python/AutoKey.ui")[0]
@@ -39,29 +41,33 @@ class WindowClass(QMainWindow, form_class):
         self.setupUi(self)
         self.setWindowIcon(QtGui.QIcon('E:/Git/Personal/Python/AutoIcon-removebg-preview.png'))
         self.setWindowTitle('AutoHotKey')
-        self.setFixedSize(QSize(295, 380))
+        self.setFixedSize(QSize(295, 450))
         
         # =============================================================================================================
         
         self.pushButton_Start.clicked.connect(self.ClickedPushButton)
         self.pushButton_Stop.clicked.connect(self.CLickedStopButton)
-        self.pushButton_hotkey_1_0.clicked.connect(lambda: self.TTT(0, 0))
-        self.pushButton_hotkey_1_1.clicked.connect(lambda: self.TTT(0, 1))
-        self.pushButton_hotkey_1_2.clicked.connect(lambda: self.TTT(0, 2))
-        self.pushButton_hotkey_2_0.clicked.connect(lambda: self.TTT(1, 0))
-        self.pushButton_hotkey_2_1.clicked.connect(lambda: self.TTT(1, 1))
-        self.pushButton_hotkey_2_2.clicked.connect(lambda: self.TTT(1, 2))
-        self.pushButton_hotkey_3_0.clicked.connect(lambda: self.TTT(2, 0))
-        self.pushButton_hotkey_3_1.clicked.connect(lambda: self.TTT(2, 1))
-        self.pushButton_hotkey_3_2.clicked.connect(lambda: self.TTT(2, 2))
-        self.pushButton_hotkey_4_0.clicked.connect(lambda: self.TTT(3, 0))
-        self.pushButton_hotkey_4_1.clicked.connect(lambda: self.TTT(3, 1))
-        self.pushButton_hotkey_4_2.clicked.connect(lambda: self.TTT(3, 2))
         
-        self.hotKeyList = [[self.pushButton_hotkey_1_0, self.pushButton_hotkey_1_1, self.pushButton_hotkey_1_2],
+        self.pushButton_hotkey_0_0.clicked.connect(lambda: self.SetButtonText(0, 0))
+        self.pushButton_hotkey_0_1.clicked.connect(lambda: self.SetButtonText(0, 1))
+        self.pushButton_hotkey_0_2.clicked.connect(lambda: self.SetButtonText(0, 2))
+        self.pushButton_hotkey_1_0.clicked.connect(lambda: self.SetButtonText(1, 0))
+        self.pushButton_hotkey_1_1.clicked.connect(lambda: self.SetButtonText(1, 1))
+        self.pushButton_hotkey_1_2.clicked.connect(lambda: self.SetButtonText(1, 2))
+        self.pushButton_hotkey_2_0.clicked.connect(lambda: self.SetButtonText(2, 0))
+        self.pushButton_hotkey_2_1.clicked.connect(lambda: self.SetButtonText(2, 1))
+        self.pushButton_hotkey_2_2.clicked.connect(lambda: self.SetButtonText(2, 2))
+        self.pushButton_hotkey_3_0.clicked.connect(lambda: self.SetButtonText(3, 0))
+        self.pushButton_hotkey_3_1.clicked.connect(lambda: self.SetButtonText(3, 1))
+        self.pushButton_hotkey_3_2.clicked.connect(lambda: self.SetButtonText(3, 2))
+        
+        self.pushButton_Save.clicked.connect(self.SavePreference)
+        self.pushButton_Exit.clicked.connect(self.closeEvent)
+        
+        self.hotKeyList = [[self.pushButton_hotkey_0_0, self.pushButton_hotkey_0_1, self.pushButton_hotkey_0_2],
+                           [self.pushButton_hotkey_1_0, self.pushButton_hotkey_1_1, self.pushButton_hotkey_1_2],
                            [self.pushButton_hotkey_2_0, self.pushButton_hotkey_2_1, self.pushButton_hotkey_2_2],
-                           [self.pushButton_hotkey_3_0, self.pushButton_hotkey_3_1, self.pushButton_hotkey_3_2],
-                           [self.pushButton_hotkey_4_0, self.pushButton_hotkey_4_1, self.pushButton_hotkey_4_2]]
+                           [self.pushButton_hotkey_3_0, self.pushButton_hotkey_3_1, self.pushButton_hotkey_3_2]]
         
         # =============================================================================================================
         
@@ -71,15 +77,107 @@ class WindowClass(QMainWindow, form_class):
 
         pyautogui.FAILSAFE = False
         
-        # ================ 프로그램 실행 시 자동 시작 ================ #
-        self.key = self.key = self.comboBox_SelectKey.currentText()
-        self.cycle = int(self.lineEdit_Cycle.text())
+        self.InitPreference()
         
-        self.timer = QTimer(self)
-        self.timer.start(1500)
-        self.timer.timeout.connect(self.AutoKeyStart)
+        # ================ 프로그램 실행 시 자동 시작 ================ #
+        # self.key = self.key = self.comboBox_SelectKey.currentText()
+        # self.cycle = int(self.lineEdit_Cycle.text())
+        
+        # self.timer = QTimer(self)
+        # self.timer.start(1500)
+        # self.timer.timeout.connect(self.AutoKeyStart)
         # ================ 프로그램 실행 시 자동 시작 ================ #
     
+    def InitPreference(self):
+        config = configparser.ConfigParser()
+        path = os.path.dirname(os.path.abspath(__file__)) 
+        path += '\config.ini'
+        readSuccess = config.read(path)
+
+        if len(readSuccess) == 0:
+            self.CreatePreference()
+        else:
+            self.comboBox_SelectKey.setCurrentIndex(int(config['AutoHotKey']['Key']))
+            self.lineEdit_Cycle.setText(config['AutoHotKey']['Cycle'])
+            
+            self.pushButton_hotkey_0_0.setText(config['HotCorner']['0_0'])
+            self.pushButton_hotkey_0_1.setText(config['HotCorner']['0_1'])
+            self.pushButton_hotkey_0_2.setText(config['HotCorner']['0_2'])
+            
+            self.pushButton_hotkey_1_0.setText(config['HotCorner']['1_0'])
+            self.pushButton_hotkey_1_1.setText(config['HotCorner']['1_1'])
+            self.pushButton_hotkey_1_2.setText(config['HotCorner']['1_2'])
+            
+            self.pushButton_hotkey_2_0.setText(config['HotCorner']['2_0'])
+            self.pushButton_hotkey_2_1.setText(config['HotCorner']['2_1'])
+            self.pushButton_hotkey_2_2.setText(config['HotCorner']['2_2'])
+            
+            self.pushButton_hotkey_3_0.setText(config['HotCorner']['3_0'])
+            self.pushButton_hotkey_3_1.setText(config['HotCorner']['3_1'])
+            self.pushButton_hotkey_3_2.setText(config['HotCorner']['3_2'])
+            
+
+    def CreatePreference(self):
+        config = configparser.ConfigParser()
+        path = os.path.dirname(os.path.abspath(__file__))
+        path += '\config.ini'
+
+        config['AutoHotKey'] = {}
+        config['AutoHotKey']['Key'] = '0'
+        config['AutoHotKey']['Cycle'] = '1'
+
+        config['HotCorner'] = {}
+        config['HotCorner']['0_0'] = 'none'
+        config['HotCorner']['0_1'] = 'none'
+        config['HotCorner']['0_2'] = 'none'
+        
+        config['HotCorner']['1_0'] = 'none'
+        config['HotCorner']['1_1'] = 'none'
+        config['HotCorner']['1_2'] = 'none'
+        
+        config['HotCorner']['2_0'] = 'none'
+        config['HotCorner']['2_1'] = 'none'
+        config['HotCorner']['2_2'] = 'none'
+        
+        config['HotCorner']['3_0'] = 'none'
+        config['HotCorner']['3_1'] = 'none'
+        config['HotCorner']['3_2'] = 'none'
+
+        with open(path, 'w', encoding='utf-8') as configfile:
+            config.write(configfile)
+
+    def SavePreference(self):
+        config = configparser.ConfigParser()
+        path = os.path.dirname(os.path.abspath(__file__)) 
+        path += '\config.ini'
+        readSuccess = config.read(path)
+
+        if len(readSuccess) == 0:
+            self.CreatePreference()
+            self.SavePreference()
+        else:
+            config['AutoHotKey']['Key'] = str(self.comboBox_SelectKey.currentIndex())
+            config['AutoHotKey']['Cycle'] = self.lineEdit_Cycle.text()
+
+            config['HotCorner']['0_0'] = self.pushButton_hotkey_0_0.text()
+            config['HotCorner']['0_1'] = self.pushButton_hotkey_0_1.text()
+            config['HotCorner']['0_2'] = self.pushButton_hotkey_0_2.text()
+            
+            config['HotCorner']['1_0'] = self.pushButton_hotkey_1_0.text()
+            config['HotCorner']['1_1'] = self.pushButton_hotkey_1_1.text()
+            config['HotCorner']['1_2'] = self.pushButton_hotkey_1_2.text()
+            
+            config['HotCorner']['2_0'] = self.pushButton_hotkey_2_0.text()
+            config['HotCorner']['2_1'] = self.pushButton_hotkey_2_1.text()
+            config['HotCorner']['2_2'] = self.pushButton_hotkey_2_2.text()
+            
+            config['HotCorner']['3_0'] = self.pushButton_hotkey_3_0.text()
+            config['HotCorner']['3_1'] = self.pushButton_hotkey_3_1.text()
+            config['HotCorner']['3_2'] = self.pushButton_hotkey_3_2.text()
+            
+            with open(path, 'w', encoding='utf-8') as configfile:
+                config.write(configfile)
+
     def TrayInit(self):
         show_action = QAction("Show", self)
         hide_action = QAction("Hide", self)
@@ -154,13 +252,12 @@ class WindowClass(QMainWindow, form_class):
         self.trayIcon.setToolTip("상태 : Stop")
         self.label_Status.setText("상태 : Stop")
     
-    def TTT(self, hotNum, keyNum):
+    def SetButtonText(self, hotNum, keyNum):
         if self.win2.isVisible() == False:
             self.win2.SetTargetInfo(hotNum, keyNum)
             self.win2.show()
     
     def SetInputValue(self, value, hotNum, keyNum):
-        print('1-1', value, hotNum, keyNum)
         if value < 999:
             self.hotKeyList[hotNum][keyNum].setText(chr(value))
         elif value == 99999999:
@@ -264,9 +361,6 @@ class Thread(QThread):
             self.curX = pyautogui.position().x
             self.curY = pyautogui.position().y
             
-            # print(self.rect.width(), self.rect.height())
-            print(self.curX, self.curY)
-
             if ((self.curX != self.zero and self.curX != self.width) or (self.curY != self.zero and self.curY != self.height)):
                 self.actionFlag = True
             elif (self.actionFlag and self.curX == self.zero and self.curY == self.zero):
