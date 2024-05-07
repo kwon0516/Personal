@@ -39,7 +39,8 @@ class WindowClass(QMainWindow, form_class):
         self.Thread_HotCorner = Thread(self)
         self.Thread_HotCorner.start()
         self.setupUi(self)
-        self.setWindowIcon(QtGui.QIcon('E:/Git/Personal/Python/AutoIcon-removebg-preview.png'))
+        self.setWindowIcon(QtGui.QIcon('D:/Git/Personal/Python/AutoIcon-removebg-preview.png'))
+        # self.setWindowIcon(QtGui.QIcon('E:/Git/Personal/Python/AutoIcon-removebg-preview.png'))
         self.setWindowTitle('AutoHotKey')
         self.setFixedSize(QSize(295, 450))
         
@@ -71,7 +72,8 @@ class WindowClass(QMainWindow, form_class):
         
         # =============================================================================================================
         
-        self.trayIcon = QSystemTrayIcon(QtGui.QIcon('E:/Git/Personal/Python/AutoIcon-removebg-preview.png'), app)
+        self.trayIcon = QSystemTrayIcon(QtGui.QIcon('D:/Git/Personal/Python/AutoIcon-removebg-preview.png'), app)
+        # self.trayIcon = QSystemTrayIcon(QtGui.QIcon('E:/Git/Personal/Python/AutoIcon-removebg-preview.png'), app)
         self.trayIcon.setToolTip("상태 : Stop")
         self.TrayInit()
 
@@ -90,8 +92,9 @@ class WindowClass(QMainWindow, form_class):
     
     def InitPreference(self):
         config = configparser.ConfigParser()
-        path = os.path.dirname(os.path.abspath(__file__)) 
-        path += '\config.ini'
+        # path = os.path.dirname(os.path.abspath(__file__)) 
+        # path += '\config.ini'
+        path = 'D:\AutoHotKey\config.ini'
         readSuccess = config.read(path)
 
         if len(readSuccess) == 0:
@@ -119,8 +122,9 @@ class WindowClass(QMainWindow, form_class):
 
     def CreatePreference(self):
         config = configparser.ConfigParser()
-        path = os.path.dirname(os.path.abspath(__file__))
-        path += '\config.ini'
+        # path = os.path.dirname(os.path.abspath(__file__))
+        # path += '\config.ini'
+        path = 'D:\AutoHotKey\config.ini'
 
         config['AutoHotKey'] = {}
         config['AutoHotKey']['Key'] = '0'
@@ -143,13 +147,16 @@ class WindowClass(QMainWindow, form_class):
         config['HotCorner']['3_1'] = 'none'
         config['HotCorner']['3_2'] = 'none'
 
+        os.mkdir('D:\AutoHotKey')
+        
         with open(path, 'w', encoding='utf-8') as configfile:
             config.write(configfile)
 
     def SavePreference(self):
         config = configparser.ConfigParser()
-        path = os.path.dirname(os.path.abspath(__file__)) 
-        path += '\config.ini'
+        # path = os.path.dirname(os.path.abspath(__file__)) 
+        # path += '\config.ini'
+        path = 'D:\AutoHotKey\config.ini'
         readSuccess = config.read(path)
 
         if len(readSuccess) == 0:
@@ -192,6 +199,8 @@ class WindowClass(QMainWindow, form_class):
         self.trayIcon.setContextMenu(tray_menu)
         self.trayIcon.show()
         self.trayIcon.activated.connect(self.DoubleClickedTrayIcon)
+        
+        print(1)
     
     def DoubleClickedTrayIcon(self, reson):
         if (reson == QSystemTrayIcon.DoubleClick):
