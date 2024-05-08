@@ -10,10 +10,23 @@ from PyQt5 import QtGui
 from PyQt5.QtCore import QEvent, QObject, QTimer, QTime
 from pynput import keyboard
 
-form_class = uic.loadUiType("D:/Git/Personal/Python/AutoKey.ui")[0]
-# form_class = uic.loadUiType("E:/Git/Personal/Python/AutoKey.ui")[0]
-form_class2 = uic.loadUiType("D:/Git/Personal/Python/InputKey.ui")[0]
-# form_class2 = uic.loadUiType("E:/Git/Personal/Python/InputKey.ui")[0]
+def resource_path(relative_path):
+    base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+    return os.path.join(base_path, relative_path)
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+print(BASE_DIR + "\AutoHotKey.py")
+
+form = resource_path(BASE_DIR + "\AutoKey.ui")
+form_class = uic.loadUiType(form)[0]
+form2 = resource_path(BASE_DIR + "\InputKey.ui")
+form_class2 = uic.loadUiType(form)[0]
+
+
+# form_class = uic.loadUiType("D:/Git/Personal/Python/AutoKey.ui")[0]
+# # form_class = uic.loadUiType("E:/Git/Personal/Python/AutoKey.ui")[0]
+# form_class2 = uic.loadUiType("D:/Git/Personal/Python/InputKey.ui")[0]
+# # form_class2 = uic.loadUiType("E:/Git/Personal/Python/InputKey.ui")[0]
 
 class WindowClass(QMainWindow, form_class):
     def __init__(self):
@@ -200,8 +213,6 @@ class WindowClass(QMainWindow, form_class):
         self.trayIcon.show()
         self.trayIcon.activated.connect(self.DoubleClickedTrayIcon)
         
-        print(1)
-    
     def DoubleClickedTrayIcon(self, reson):
         if (reson == QSystemTrayIcon.DoubleClick):
             self.showNormal()

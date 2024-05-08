@@ -1,6 +1,24 @@
 회사 노트북 기준 경로
 pyinstaller E:\Git\Personal\Python\AutoHotKey.py -F -w --icon=E:\Git\Personal\Python\AutoHotKeyIcon.ico
 
+집 데스크탑
+pyinstaller D:\Git\Personal\Python\AutoHotKey.py -F -w --icon=D:\Git\Personal\Python\AutoHotKeyIcon.ico
+
 
 배포파일 생성 경로
 C:\Users\user\dist
+
+
+
+※ .ui 파일 없이 .exe 단독 실행 가능하게 배포파일 생성하는 법
+
+1. 위 경로로 .exe 파일 생성
+
+2. 생성된 .spec 파일의 datas 부분에
+   datas=[('InputKey.ui', '.'), ('AutoKey.ui', '.')],
+   위와 같이 .ui 파일 포함시키기
+
+3. 소스파일, ui파일, 이미지파일 등 필요한 파일을 .spec 경로로 이동
+
+4. pyinstaller C:\Users\user\AutoHotKey.spec
+   위와 같이 .spec 파일로 재배포
