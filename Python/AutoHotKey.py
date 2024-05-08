@@ -55,7 +55,7 @@ class WindowClass(QMainWindow, form_class):
         self.setWindowIcon(QtGui.QIcon('D:/Git/Personal/Python/AutoIcon-removebg-preview.png'))
         # self.setWindowIcon(QtGui.QIcon('E:/Git/Personal/Python/AutoIcon-removebg-preview.png'))
         self.setWindowTitle('AutoHotKey')
-        self.setFixedSize(QSize(295, 450))
+        self.setFixedSize(QSize(295, 600))
         
         # =============================================================================================================
         
@@ -75,6 +75,15 @@ class WindowClass(QMainWindow, form_class):
         self.pushButton_hotkey_3_1.clicked.connect(lambda: self.SetButtonText(3, 1))
         self.pushButton_hotkey_3_2.clicked.connect(lambda: self.SetButtonText(3, 2))
         
+        self.pushButton_Calibration_LeftTop_1.clicked.connect(lambda: self.SetButtonText(0, 0, 1, 0, 0))
+        self.pushButton_Calibration_RightTop_1.clicked.connect(lambda: self.SetButtonText(0, 0, 1, 0, 1))
+        self.pushButton_Calibration_LeftBottom_1.clicked.connect(lambda: self.SetButtonText(0, 0, 1, 0, 2))
+        self.pushButton_Calibration_RightBottom_1.clicked.connect(lambda: self.SetButtonText(0, 0, 1, 0, 3))
+        self.pushButton_Calibration_LeftTop_2.clicked.connect(lambda: self.SetButtonText(0, 0, 1, 1, 0))
+        self.pushButton_Calibration_RightTop_2.clicked.connect(lambda: self.SetButtonText(0, 0, 1, 1, 1))
+        self.pushButton_Calibration_LeftBottom_2.clicked.connect(lambda: self.SetButtonText(0, 0, 1, 1, 2))
+        self.pushButton_Calibration_RightBottom_2.clicked.connect(lambda: self.SetButtonText(0, 0, 1, 1, 3))
+        
         self.pushButton_Save.clicked.connect(self.SavePreference)
         self.pushButton_Exit.clicked.connect(self.closeEvent)
         
@@ -82,6 +91,11 @@ class WindowClass(QMainWindow, form_class):
                            [self.pushButton_hotkey_1_0, self.pushButton_hotkey_1_1, self.pushButton_hotkey_1_2],
                            [self.pushButton_hotkey_2_0, self.pushButton_hotkey_2_1, self.pushButton_hotkey_2_2],
                            [self.pushButton_hotkey_3_0, self.pushButton_hotkey_3_1, self.pushButton_hotkey_3_2]]
+        
+        self.CalibrationValueList = [[self.pushButton_Calibration_LeftTop_1, self.pushButton_Calibration_RightTop_1,
+                                      self.pushButton_Calibration_LeftBottom_1, self.pushButton_Calibration_RightBottom_1],
+                                     [self.pushButton_Calibration_LeftTop_2, self.pushButton_Calibration_RightTop_2,
+                                      self.pushButton_Calibration_LeftBottom_2, self.pushButton_Calibration_RightBottom_2]]
         
         # =============================================================================================================
         
@@ -132,7 +146,19 @@ class WindowClass(QMainWindow, form_class):
             self.pushButton_hotkey_3_1.setText(config['HotCorner']['3_1'])
             self.pushButton_hotkey_3_2.setText(config['HotCorner']['3_2'])
             
+            self.pushButton_Calibration_LeftTop_1.setText(config['Calibration']['0_0'])
+            self.pushButton_Calibration_RightTop_1.setText(config['Calibration']['0_1'])
+            self.pushButton_Calibration_LeftBottom_1.setText(config['Calibration']['0_2'])
+            self.pushButton_Calibration_RightBottom_1.setText(config['Calibration']['0_3'])
+            
+            self.pushButton_Calibration_LeftTop_2.setText(config['Calibration']['1_0'])
+            self.pushButton_Calibration_RightTop_2.setText(config['Calibration']['1_1'])
+            self.pushButton_Calibration_LeftBottom_2.setText(config['Calibration']['1_2'])
+            self.pushButton_Calibration_RightBottom_2.setText(config['Calibration']['1_3'])
 
+            self.checkBox_Monitor_1.setChecked(False if config['IsUseCalibration']['0'] == '0' else True)
+            self.checkBox_Monitor_2.setChecked(False if config['IsUseCalibration']['1'] == '0' else True)
+            
     def CreatePreference(self):
         config = configparser.ConfigParser()
         # path = os.path.dirname(os.path.abspath(__file__))
@@ -159,8 +185,24 @@ class WindowClass(QMainWindow, form_class):
         config['HotCorner']['3_0'] = 'none'
         config['HotCorner']['3_1'] = 'none'
         config['HotCorner']['3_2'] = 'none'
+        
+        config['Calibration'] = {}
+        config['Calibration']['0_0'] = 'none'
+        config['Calibration']['0_1'] = 'none'
+        config['Calibration']['0_2'] = 'none'
+        config['Calibration']['0_3'] = 'none'
+        
+        config['Calibration']['1_0'] = 'none'
+        config['Calibration']['1_1'] = 'none'
+        config['Calibration']['1_2'] = 'none'
+        config['Calibration']['1_3'] = 'none'
+        
+        config['IsUseCalibration'] = {}
+        config['IsUseCalibration']['0'] = '0'
+        config['IsUseCalibration']['1'] = '0'
 
-        os.mkdir('D:\AutoHotKey')
+        if os.path.exists('D:\AutoHotKey') == False:
+            os.mkdir('D:\AutoHotKey')
         
         with open(path, 'w', encoding='utf-8') as configfile:
             config.write(configfile)
@@ -194,6 +236,19 @@ class WindowClass(QMainWindow, form_class):
             config['HotCorner']['3_0'] = self.pushButton_hotkey_3_0.text()
             config['HotCorner']['3_1'] = self.pushButton_hotkey_3_1.text()
             config['HotCorner']['3_2'] = self.pushButton_hotkey_3_2.text()
+            
+            config['Calibration']['0_0'] = self.pushButton_Calibration_LeftTop_1.text()
+            config['Calibration']['0_1'] = self.pushButton_Calibration_RightTop_1.text()
+            config['Calibration']['0_2'] = self.pushButton_Calibration_LeftBottom_1.text()
+            config['Calibration']['0_3'] = self.pushButton_Calibration_RightBottom_1.text()
+            
+            config['Calibration']['1_0'] = self.pushButton_Calibration_LeftTop_2.text()
+            config['Calibration']['1_1'] = self.pushButton_Calibration_RightTop_2.text()
+            config['Calibration']['1_2'] = self.pushButton_Calibration_LeftBottom_2.text()
+            config['Calibration']['1_3'] = self.pushButton_Calibration_RightBottom_2.text()
+            
+            config['IsUseCalibration']['0'] = '0' if self.checkBox_Monitor_1.isChecked() == False else '1'
+            config['IsUseCalibration']['1'] = '0' if self.checkBox_Monitor_2.isChecked() == False else '1'
             
             with open(path, 'w', encoding='utf-8') as configfile:
                 config.write(configfile)
@@ -272,8 +327,13 @@ class WindowClass(QMainWindow, form_class):
         self.trayIcon.setToolTip("상태 : Stop")
         self.label_Status.setText("상태 : Stop")
     
-    def SetButtonText(self, hotNum, keyNum):
+    def SetButtonText(self, hotNum, keyNum, mode = 0, monitorNum = 0, calibrationPosition = 0):
         if self.win2.isVisible() == False:
+            if mode == 0:
+                self.win2.SetMode(0)
+            else:
+                self.win2.SetMode(1, monitorNum, calibrationPosition)
+                
             self.win2.SetTargetInfo(hotNum, keyNum)
             self.win2.show()
     
@@ -284,6 +344,10 @@ class WindowClass(QMainWindow, form_class):
             self.hotKeyList[hotNum][keyNum].setText('None')
         elif value in self.specialKey:
             self.hotKeyList[hotNum][keyNum].setText(self.specialKey[value])
+    
+    def SetCalibrationValue(self, x, y, monitorNum, calibrationPosition):
+        text = "{}-{}".format(x, y)
+        self.CalibrationValueList[monitorNum][calibrationPosition].setText(text)
     
     def HotKeyAction(self, hotKeyNum):
         if hotKeyNum == 0:
@@ -316,8 +380,11 @@ class WindowClass(QMainWindow, form_class):
             pyautogui.keyUp(key2)
         if key3 != "none":
             pyautogui.keyUp(key3)
-        
-        return
+    
+    def GetCurMousePosition(self):
+        curX, curY = self.Thread_HotCorner.GetCurMousePosition()
+
+        return [curX, curY]
 
 class WindowClass2(QMainWindow, form_class2):
     def __init__(self):
@@ -336,13 +403,34 @@ class WindowClass2(QMainWindow, form_class2):
         self.keyNum = 0
         self.inputASCII = 0
         
+        self.mode = 0 # 0 = 핫코너, 1 = 좌표 보정
+        self.monitorNum = 0
+        self.calibrationPosition = 0
+        
         self.Button_none.clicked.connect(lambda: self.SendInputValue(99999999))
     
+    def SetMode(self, mode, monitorNum = 0, calibrationPosition = 0):
+        if mode == 0:
+            self.mode = 0
+            self.label_inputkey_title.setText('키를 입력하세요')
+            self.Button_none.show()
+        else:
+            self.mode = 1
+            self.monitorNum = monitorNum
+            self.calibrationPosition = calibrationPosition
+            self.label_inputkey_title.setText('좌표에서 Enter')
+            self.Button_none.hide()
+        
+        self.mode = mode
+    
     def keyPressEvent(self, e):
-        str
         self.inputASCII = int(e.key())
-
-        self.SendInputValue()
+        
+        if self.mode == 0:
+            self.SendInputValue()
+        elif self.mode == 1 and self.inputASCII == 16777220: # 16777220 : Enter
+            curX, curY = myWindow.GetCurMousePosition()
+            self.SendCalibrationValue(curX, curY)
     
     def SetTargetInfo(self, hotNum, keyNum):
         self.hotNum = hotNum
@@ -353,6 +441,10 @@ class WindowClass2(QMainWindow, form_class2):
             self.inputASCII = 99999999
             
         myWindow.SetInputValue(self.inputASCII, self.hotNum, self.keyNum)
+        self.close()
+    
+    def SendCalibrationValue(self, x, y):
+        myWindow.SetCalibrationValue(x, y, self.monitorNum, self.calibrationPosition)
         self.close()
 
 class Thread(QThread):
@@ -395,6 +487,9 @@ class Thread(QThread):
             elif (self.actionFlag and self.curX >= self.width and self.curY >= self.height):
                 self.CurPosRightBottom()
                 self.actionFlag = False
+    
+    def GetCurMousePosition(self):
+        return [self.curX, self.curY]
     
     def StopThread(self):
         self.ThreadFlag = False
