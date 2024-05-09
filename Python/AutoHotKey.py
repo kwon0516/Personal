@@ -15,7 +15,6 @@ def resource_path(relative_path):
     return os.path.join(base_path, relative_path)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-print(BASE_DIR + "\AutoHotKey.py")
 
 form = resource_path(BASE_DIR + "\AutoKey.ui")
 form_class = uic.loadUiType(form)[0]
@@ -39,6 +38,9 @@ class WindowClass(QMainWindow, form_class):
         self.status_run = False
         self.key = ""
         self.cycle = 0
+        
+        self.useMonitor1 = False
+        self.useMonitor2 = False
         
         # =============================================================================================================
         
@@ -96,6 +98,26 @@ class WindowClass(QMainWindow, form_class):
                                       self.pushButton_Calibration_LeftBottom_1, self.pushButton_Calibration_RightBottom_1],
                                      [self.pushButton_Calibration_LeftTop_2, self.pushButton_Calibration_RightTop_2,
                                       self.pushButton_Calibration_LeftBottom_2, self.pushButton_Calibration_RightBottom_2]]
+        
+        self.value0_0_x = 0
+        self.value0_0_y = 0
+        self.value0_1_x = 0
+        self.value0_1_y = 0
+        self.value0_2_x = 0
+        self.value0_2_y = 0
+        self.value0_3_x = 0
+        self.value0_3_y = 0
+        self.value1_0_x = 0
+        self.value1_0_y = 0
+        self.value1_1_x = 0
+        self.value1_1_y = 0
+        self.value1_2_x = 0
+        self.value1_2_y = 0
+        self.value1_3_x = 0
+        self.value1_3_y = 0
+        
+        self.calibrationValue = [[self.value0_0_x, self.value0_0_y], [self.value0_1_x, self.value0_1_y], [self.value0_2_x, self.value0_2_y], [self.value0_3_x, self.value0_3_y],
+                                 [self.value1_0_x, self.value1_0_y], [self.value1_1_x, self.value1_1_y], [self.value1_2_x, self.value1_2_y], [self.value1_3_x, self.value1_3_y]]
         
         # =============================================================================================================
         
@@ -156,8 +178,52 @@ class WindowClass(QMainWindow, form_class):
             self.pushButton_Calibration_LeftBottom_2.setText(config['Calibration']['1_2'])
             self.pushButton_Calibration_RightBottom_2.setText(config['Calibration']['1_3'])
 
-            self.checkBox_Monitor_1.setChecked(False if config['IsUseCalibration']['0'] == '0' else True)
-            self.checkBox_Monitor_2.setChecked(False if config['IsUseCalibration']['1'] == '0' else True)
+            use = False if config['UseMonitor']['0'] == '0' else True
+            self.useMonitor1 = use
+            self.checkBox_Monitor_1.setChecked(use)
+            use = False if config['UseMonitor']['1'] == '0' else True
+            self.useMonitor2 = use
+            self.checkBox_Monitor_2.setChecked(use)
+            # self.checkBox_Monitor_1.setChecked(False if config['UseMonitor']['0'] == '0' else True)
+            # self.checkBox_Monitor_2.setChecked(False if config['UseMonitor']['1'] == '0' else True)
+            
+            self.calibrationValue[0][0] = config['Calibration']['0_0'].split('.')[0]
+            self.calibrationValue[0][1] = config['Calibration']['0_0'].split('.')[1]
+            self.calibrationValue[1][0] = config['Calibration']['0_1'].split('.')[0]
+            self.calibrationValue[1][1] = config['Calibration']['0_1'].split('.')[1]
+            self.calibrationValue[2][0] = config['Calibration']['0_2'].split('.')[0]
+            self.calibrationValue[2][1] = config['Calibration']['0_2'].split('.')[1]
+            self.calibrationValue[3][0] = config['Calibration']['0_3'].split('.')[0]
+            self.calibrationValue[3][1] = config['Calibration']['0_3'].split('.')[1]
+            
+            self.calibrationValue[4][0] = config['Calibration']['1_0'].split('.')[0]
+            self.calibrationValue[4][1] = config['Calibration']['1_0'].split('.')[1]
+            self.calibrationValue[5][0] = config['Calibration']['1_1'].split('.')[0]
+            self.calibrationValue[5][1] = config['Calibration']['1_1'].split('.')[1]
+            self.calibrationValue[6][0] = config['Calibration']['1_2'].split('.')[0]
+            self.calibrationValue[6][1] = config['Calibration']['1_2'].split('.')[1]
+            self.calibrationValue[7][0] = config['Calibration']['1_3'].split('.')[0]
+            self.calibrationValue[7][1] = config['Calibration']['1_3'].split('.')[1]
+            
+            # self.value0_0_x = config['Calibration']['0_0'].split('.')[0]
+            # self.value0_0_y = config['Calibration']['0_0'].split('.')[1]
+            # self.value0_1_x = config['Calibration']['0_1'].split('.')[0]
+            # self.value0_1_y = config['Calibration']['0_1'].split('.')[1]
+            # self.value0_2_x = config['Calibration']['0_2'].split('.')[0]
+            # self.value0_2_y = config['Calibration']['0_2'].split('.')[1]
+            # self.value0_3_x = config['Calibration']['0_3'].split('.')[0]
+            # self.value0_3_y = config['Calibration']['0_3'].split('.')[1]
+            
+            # self.value1_0_x = config['Calibration']['1_0'].split('.')[0]
+            # self.value1_0_y = config['Calibration']['1_0'].split('.')[1]
+            # self.value1_1_x = config['Calibration']['1_1'].split('.')[0]
+            # self.value1_1_y = config['Calibration']['1_1'].split('.')[1]
+            # self.value1_2_x = config['Calibration']['1_2'].split('.')[0]
+            # self.value1_2_y = config['Calibration']['1_2'].split('.')[1]
+            # self.value1_3_x = config['Calibration']['1_3'].split('.')[0]
+            # self.value1_3_y = config['Calibration']['1_3'].split('.')[1]
+            
+            self.Thread_HotCorner.SetCalibrationValue(self.calibrationValue)
             
     def CreatePreference(self):
         config = configparser.ConfigParser()
@@ -187,19 +253,19 @@ class WindowClass(QMainWindow, form_class):
         config['HotCorner']['3_2'] = 'none'
         
         config['Calibration'] = {}
-        config['Calibration']['0_0'] = 'none'
-        config['Calibration']['0_1'] = 'none'
-        config['Calibration']['0_2'] = 'none'
-        config['Calibration']['0_3'] = 'none'
+        config['Calibration']['0_0'] = '0.0'
+        config['Calibration']['0_1'] = '0.0'
+        config['Calibration']['0_2'] = '0.0'
+        config['Calibration']['0_3'] = '0.0'
         
-        config['Calibration']['1_0'] = 'none'
-        config['Calibration']['1_1'] = 'none'
-        config['Calibration']['1_2'] = 'none'
-        config['Calibration']['1_3'] = 'none'
+        config['Calibration']['1_0'] = '0.0'
+        config['Calibration']['1_1'] = '0.0'
+        config['Calibration']['1_2'] = '0.0'
+        config['Calibration']['1_3'] = '0.0'
         
-        config['IsUseCalibration'] = {}
-        config['IsUseCalibration']['0'] = '0'
-        config['IsUseCalibration']['1'] = '0'
+        config['UseMonitor'] = {}
+        config['UseMonitor']['0'] = '0'
+        config['UseMonitor']['1'] = '0'
 
         if os.path.exists('D:\AutoHotKey') == False:
             os.mkdir('D:\AutoHotKey')
@@ -247,12 +313,23 @@ class WindowClass(QMainWindow, form_class):
             config['Calibration']['1_2'] = self.pushButton_Calibration_LeftBottom_2.text()
             config['Calibration']['1_3'] = self.pushButton_Calibration_RightBottom_2.text()
             
-            config['IsUseCalibration']['0'] = '0' if self.checkBox_Monitor_1.isChecked() == False else '1'
-            config['IsUseCalibration']['1'] = '0' if self.checkBox_Monitor_2.isChecked() == False else '1'
+            config['UseMonitor']['0'] = '0' if self.checkBox_Monitor_1.isChecked() == False else '1'
+            config['UseMonitor']['1'] = '0' if self.checkBox_Monitor_2.isChecked() == False else '1'
             
             with open(path, 'w', encoding='utf-8') as configfile:
                 config.write(configfile)
-
+        
+        self.InitPreference()
+    
+    def IsUseMonitor(self, monitorNum):
+        if monitorNum == 0:
+            return self.useMonitor1
+        else:
+            return self.useMonitor2
+    
+    def GetCalibrationValue(self):
+        return self.calibrationValue
+    
     def TrayInit(self):
         show_action = QAction("Show", self)
         hide_action = QAction("Hide", self)
@@ -346,7 +423,7 @@ class WindowClass(QMainWindow, form_class):
             self.hotKeyList[hotNum][keyNum].setText(self.specialKey[value])
     
     def SetCalibrationValue(self, x, y, monitorNum, calibrationPosition):
-        text = "{}-{}".format(x, y)
+        text = "{}.{}".format(x, y)
         self.CalibrationValueList[monitorNum][calibrationPosition].setText(text)
     
     def HotKeyAction(self, hotKeyNum):
@@ -457,6 +534,11 @@ class Thread(QThread):
         self.actionFlag = True
         self.ThreadFlag = True
         
+        self.calibrationValue = []
+        # self.calibrationValue = [[], [], [], [],
+        #                          [], [], [], []]
+        # self.calibrationValue = myWindow.GetCalibrationValue()
+        
         # print(app.desktop().screen(0).screen().name())
         # print(app.screenAt(QPoint(0,0)).name())
 
@@ -487,6 +569,24 @@ class Thread(QThread):
             elif (self.actionFlag and self.curX >= self.width and self.curY >= self.height):
                 self.CurPosRightBottom()
                 self.actionFlag = False
+            
+            # if ((self.curX != self.zero and self.curX != self.width) or (self.curY != self.zero and self.curY != self.height)):
+            #     self.actionFlag = True
+            # elif (self.actionFlag and self.curX == self.zero and self.curY == self.zero):
+            #     self.CurPosLeftTop()
+            #     self.actionFlag = False
+            # elif (self.actionFlag and self.curX >= self.width and self.curY == self.zero):
+            #     self.CurPosRightTop()
+            #     self.actionFlag = False
+            # elif (self.actionFlag and self.curX == self.zero and self.curY >= self.height):
+            #     self.CurPosLeftBottom()
+            #     self.actionFlag = False
+            # elif (self.actionFlag and self.curX >= self.width and self.curY >= self.height):
+            #     self.CurPosRightBottom()
+            #     self.actionFlag = False
+    
+    def SetCalibrationValue(self, l):
+        self.calibrationValue = l
     
     def GetCurMousePosition(self):
         return [self.curX, self.curY]
