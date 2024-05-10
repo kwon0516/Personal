@@ -54,8 +54,8 @@ class WindowClass(QMainWindow, form_class):
         self.Thread_HotCorner = Thread(self)
         # self.Thread_HotCorner.start()
         self.setupUi(self)
-        self.setWindowIcon(QtGui.QIcon('D:/Git/Personal/Python/AutoIcon-removebg-preview.png'))
-        # self.setWindowIcon(QtGui.QIcon('E:/Git/Personal/Python/AutoIcon-removebg-preview.png'))
+        # self.setWindowIcon(QtGui.QIcon('D:/Git/Personal/Python/AutoIcon-removebg-preview.png'))
+        self.setWindowIcon(QtGui.QIcon('E:/Git/Personal/Python/AutoIcon-removebg-preview.png'))
         self.setWindowTitle('AutoHotKey')
         self.setFixedSize(QSize(295, 600))
         
@@ -121,8 +121,8 @@ class WindowClass(QMainWindow, form_class):
         
         # =============================================================================================================
         
-        self.trayIcon = QSystemTrayIcon(QtGui.QIcon('D:/Git/Personal/Python/AutoIcon-removebg-preview.png'), app)
-        # self.trayIcon = QSystemTrayIcon(QtGui.QIcon('E:/Git/Personal/Python/AutoIcon-removebg-preview.png'), app)
+        # self.trayIcon = QSystemTrayIcon(QtGui.QIcon('D:/Git/Personal/Python/AutoIcon-removebg-preview.png'), app)
+        self.trayIcon = QSystemTrayIcon(QtGui.QIcon('E:/Git/Personal/Python/AutoIcon-removebg-preview.png'), app)
         self.trayIcon.setToolTip("상태 : Stop")
         self.TrayInit()
 
