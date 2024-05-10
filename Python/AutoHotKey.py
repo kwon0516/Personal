@@ -52,7 +52,7 @@ class WindowClass(QMainWindow, form_class):
         # =============================================================================================================
         
         self.Thread_HotCorner = Thread(self)
-        self.Thread_HotCorner.start()
+        # self.Thread_HotCorner.start()
         self.setupUi(self)
         self.setWindowIcon(QtGui.QIcon('D:/Git/Personal/Python/AutoIcon-removebg-preview.png'))
         # self.setWindowIcon(QtGui.QIcon('E:/Git/Personal/Python/AutoIcon-removebg-preview.png'))
@@ -129,6 +129,8 @@ class WindowClass(QMainWindow, form_class):
         pyautogui.FAILSAFE = False
         
         self.InitPreference()
+        
+        self.Thread_HotCorner.start()
         
         # ================ 프로그램 실행 시 자동 시작 ================ #
         # self.key = self.key = self.comboBox_SelectKey.currentText()
@@ -533,11 +535,7 @@ class Thread(QThread):
         self.curY = 9999
         self.actionFlag = True
         self.ThreadFlag = True
-        
         self.calibrationValue = []
-        # self.calibrationValue = [[], [], [], [],
-        #                          [], [], [], []]
-        # self.calibrationValue = myWindow.GetCalibrationValue()
         
         # print(app.desktop().screen(0).screen().name())
         # print(app.screenAt(QPoint(0,0)).name())
@@ -546,30 +544,37 @@ class Thread(QThread):
         # self.rect = app.desktop().screenGeometry()
         # self.width, self.height = self.rect.width() - 1, self.rect.height() - 1
         # print(self.width, self.height)
-        
+
     def run(self):
         while(self.ThreadFlag):
             self.rect = app.desktop().screenGeometry()
             self.width, self.height = self.rect.width() - 1, self.rect.height() - 1
             
-            self.curX = pyautogui.position().x
-            self.curY = pyautogui.position().y
+            self.curX = str(pyautogui.position().x)
+            self.curY = str(pyautogui.position().y)
             
-            if ((self.curX != self.zero and self.curX != self.width) or (self.curY != self.zero and self.curY != self.height)):
+            if (myWindow.IsUseMonitor(0) and self.curX == self.calibrationValue[0][0] and self.curY == self.calibrationValue[0][1]) or (myWindow.IsUseMonitor(0) and self.curX == self.calibrationValue[4][0] and self.curY == self.calibrationValue[4][1]):
+                if self.actionFlag: self.CurPosLeftTop()
+            elif (myWindow.IsUseMonitor(0) and self.curX == self.calibrationValue[1][0] and self.curY == self.calibrationValue[1][1]) or (myWindow.IsUseMonitor(0) and self.curX == self.calibrationValue[5][0] and self.curY == self.calibrationValue[5][1]):
+                if self.actionFlag: self.CurPosRightTop()
+            elif (myWindow.IsUseMonitor(0) and self.curX == self.calibrationValue[2][0] and self.curY == self.calibrationValue[2][1]) or (myWindow.IsUseMonitor(0) and self.curX == self.calibrationValue[6][0] and self.curY == self.calibrationValue[6][1]):
+                if self.actionFlag: self.CurPosLeftBottom()
+            elif (myWindow.IsUseMonitor(0) and self.curX == self.calibrationValue[3][0] and self.curY == self.calibrationValue[3][1]) or (myWindow.IsUseMonitor(0) and self.curX == self.calibrationValue[7][0] and self.curY == self.calibrationValue[7][1]):
+                if self.actionFlag: self.CurPosRightBottom()
+            else:
                 self.actionFlag = True
-            elif (self.actionFlag and self.curX == self.zero and self.curY == self.zero):
-                self.CurPosLeftTop()
-                self.actionFlag = False
-            elif (self.actionFlag and self.curX >= self.width and self.curY == self.zero):
-                self.CurPosRightTop()
-                self.actionFlag = False
-            elif (self.actionFlag and self.curX == self.zero and self.curY >= self.height):
-                self.CurPosLeftBottom()
-                self.actionFlag = False
-            elif (self.actionFlag and self.curX >= self.width and self.curY >= self.height):
-                self.CurPosRightBottom()
-                self.actionFlag = False
-            
+                # for i in range(0, 8):
+                #     for j in range(0, 2):
+                #         if j == 0:
+                #             if self.calibrationValue[i][j] != self.curX:
+                #                 print(self.calibrationValue[i][j])
+                #                 self.actionFlag = True
+                #         else:
+                #             if self.calibrationValue[i][j] != self.curY:
+                #                 print(self.calibrationValue[i][j])
+                #                 self.actionFlag = True
+                # print("==============")
+                
             # if ((self.curX != self.zero and self.curX != self.width) or (self.curY != self.zero and self.curY != self.height)):
             #     self.actionFlag = True
             # elif (self.actionFlag and self.curX == self.zero and self.curY == self.zero):
@@ -597,18 +602,22 @@ class Thread(QThread):
     # 1
     def CurPosLeftTop(self):
         myWindow.HotKeyAction(0)
+        self.actionFlag = False
         
     # 2
     def CurPosRightTop(self):
         myWindow.HotKeyAction(1)
+        self.actionFlag = False
 
     # 3
     def CurPosLeftBottom(self):
         myWindow.HotKeyAction(2)
+        self.actionFlag = False
     
     # 4
     def CurPosRightBottom(self):
         myWindow.HotKeyAction(3)
+        self.actionFlag = False
 
 
 if __name__ == "__main__":
