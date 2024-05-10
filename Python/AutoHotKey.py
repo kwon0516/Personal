@@ -7,8 +7,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtTest import *
 from PyQt5 import uic
 from PyQt5 import QtGui
-from PyQt5.QtCore import QEvent, QObject, QTimer, QTime
-from pynput import keyboard
+from PyQt5.QtCore import QEvent
 
 def resource_path(relative_path):
     base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
@@ -392,12 +391,17 @@ class WindowClass(QMainWindow, form_class):
         self.label_Status.setText("상태 : Run")
         
         while self.status_run:
-            pyautogui.keyDown(self.key)
-            pyautogui.keyUp(self.key)
-            QTest.qWait(100)
-            pyautogui.keyDown(self.key)
-            pyautogui.keyUp(self.key)
+            pyautogui.press(self.key)
+            pyautogui.press(self.key)
             QTest.qWait(self.cycle)
+            
+            # keyDown은 딜레이가 너무 길어서 press로 변경
+            # pyautogui.keyDown(self.key)
+            # pyautogui.keyUp(self.key)
+            # QTest.qWait(100)
+            # pyautogui.keyDown(self.key)
+            # pyautogui.keyUp(self.key)
+            # QTest.qWait(self.cycle)
             
     def CLickedStopButton(self):
         self.comboBox_SelectKey.setEnabled(True)
@@ -446,19 +450,22 @@ class WindowClass(QMainWindow, form_class):
             key2 = self.hotKeyList[3][1].text()
             key3 = self.hotKeyList[3][2].text()
         
-        if key1 != "none":
-            pyautogui.keyDown(key1)
-        if key2 != "none":
-            pyautogui.keyDown(key2)
-        if key3 != "none":
-            pyautogui.keyDown(key3)
+        pyautogui.hotkey(key1, key2, key3)
+
+        # keyDown은 딜레이가 너무 길어서 hotkey로 변경
+        # if key1 != "none":
+        #     pyautogui.keyDown(key1)
+        # if key2 != "none":
+        #     pyautogui.keyDown(key2)
+        # if key3 != "none":
+        #     pyautogui.keyDown(key3)
         
-        if key1 != "none":
-            pyautogui.keyUp(key1)
-        if key2 != "none":
-            pyautogui.keyUp(key2)
-        if key3 != "none":
-            pyautogui.keyUp(key3)
+        # if key1 != "none":
+        #     pyautogui.keyUp(key1)
+        # if key2 != "none":
+        #     pyautogui.keyUp(key2)
+        # if key3 != "none":
+        #     pyautogui.keyUp(key3)
     
     def GetCurMousePosition(self):
         curX, curY = self.Thread_HotCorner.GetCurMousePosition()
@@ -553,13 +560,13 @@ class Thread(QThread):
             self.curX = str(pyautogui.position().x)
             self.curY = str(pyautogui.position().y)
             
-            if (myWindow.IsUseMonitor(0) and self.curX == self.calibrationValue[0][0] and self.curY == self.calibrationValue[0][1]) or (myWindow.IsUseMonitor(0) and self.curX == self.calibrationValue[4][0] and self.curY == self.calibrationValue[4][1]):
+            if (myWindow.IsUseMonitor(0) and self.curX == self.calibrationValue[0][0] and self.curY == self.calibrationValue[0][1]) or (myWindow.IsUseMonitor(1) and self.curX == self.calibrationValue[4][0] and self.curY == self.calibrationValue[4][1]):
                 if self.actionFlag: self.CurPosLeftTop()
-            elif (myWindow.IsUseMonitor(0) and self.curX == self.calibrationValue[1][0] and self.curY == self.calibrationValue[1][1]) or (myWindow.IsUseMonitor(0) and self.curX == self.calibrationValue[5][0] and self.curY == self.calibrationValue[5][1]):
+            elif (myWindow.IsUseMonitor(0) and self.curX == self.calibrationValue[1][0] and self.curY == self.calibrationValue[1][1]) or (myWindow.IsUseMonitor(1) and self.curX == self.calibrationValue[5][0] and self.curY == self.calibrationValue[5][1]):
                 if self.actionFlag: self.CurPosRightTop()
-            elif (myWindow.IsUseMonitor(0) and self.curX == self.calibrationValue[2][0] and self.curY == self.calibrationValue[2][1]) or (myWindow.IsUseMonitor(0) and self.curX == self.calibrationValue[6][0] and self.curY == self.calibrationValue[6][1]):
+            elif (myWindow.IsUseMonitor(0) and self.curX == self.calibrationValue[2][0] and self.curY == self.calibrationValue[2][1]) or (myWindow.IsUseMonitor(1) and self.curX == self.calibrationValue[6][0] and self.curY == self.calibrationValue[6][1]):
                 if self.actionFlag: self.CurPosLeftBottom()
-            elif (myWindow.IsUseMonitor(0) and self.curX == self.calibrationValue[3][0] and self.curY == self.calibrationValue[3][1]) or (myWindow.IsUseMonitor(0) and self.curX == self.calibrationValue[7][0] and self.curY == self.calibrationValue[7][1]):
+            elif (myWindow.IsUseMonitor(0) and self.curX == self.calibrationValue[3][0] and self.curY == self.calibrationValue[3][1]) or (myWindow.IsUseMonitor(1) and self.curX == self.calibrationValue[7][0] and self.curY == self.calibrationValue[7][1]):
                 if self.actionFlag: self.CurPosRightBottom()
             else:
                 self.actionFlag = True

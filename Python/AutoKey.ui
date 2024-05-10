@@ -448,7 +448,7 @@
      </font>
     </property>
     <property name="text">
-     <string>None</string>
+     <string>0.0</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_Calibration_RightTop_1">
@@ -469,7 +469,7 @@
      </font>
     </property>
     <property name="text">
-     <string>None</string>
+     <string>0.0</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_Calibration_LeftBottom_1">
@@ -490,7 +490,7 @@
      </font>
     </property>
     <property name="text">
-     <string>None</string>
+     <string>0.0</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_Calibration_RightBottom_1">
@@ -511,7 +511,7 @@
      </font>
     </property>
     <property name="text">
-     <string>None</string>
+     <string>0.0</string>
     </property>
    </widget>
    <widget class="QCheckBox" name="checkBox_Monitor_1">
@@ -545,7 +545,7 @@
      </font>
     </property>
     <property name="text">
-     <string>None</string>
+     <string>0.0</string>
     </property>
    </widget>
    <widget class="QCheckBox" name="checkBox_Monitor_2">
@@ -579,7 +579,7 @@
      </font>
     </property>
     <property name="text">
-     <string>None</string>
+     <string>0.0</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_Calibration_RightBottom_2">
@@ -600,7 +600,7 @@
      </font>
     </property>
     <property name="text">
-     <string>None</string>
+     <string>0.0</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_Calibration_LeftBottom_2">
@@ -621,7 +621,7 @@
      </font>
     </property>
     <property name="text">
-     <string>None</string>
+     <string>0.0</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_Calibration_Notice">
