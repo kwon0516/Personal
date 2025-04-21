@@ -22,3 +22,25 @@ C:\Users\user\dist
 
 4. pyinstaller C:\Users\user\AutoHotKey.spec
    위와 같이 .spec 파일로 재배포
+
+========================= 2025.04.21 =========================
+햇갈려서 디테일하게 정리
+
+1. Anaconda에서 가상환경에 Activate(PyInstaller 설치되어 있어야 함)
+
+2. 경로는 환경에 맞게 수정해서 프롬프트에 입력
+pyinstaller E:\Git\Personal\Python\AutoHotKey.py -F -w --icon=E:\Git\Personal\Python\AutoHotKeyIcon.ico
+
+##### 배포는 여기까지가 끝이고, 아래는 .ui 파일 없이 .exe 파일 단독 실행 가능하도록 재배포 하기 위함 #####
+3. C:\Users\user\dist 경로에 .exe 파일 생성되고, 해당 파일의 상위 경로에 .spec 파일 생성됨
+
+4. .spec 파일을 열어서 datas 부분에
+   datas=[('InputKey.ui', '.'), ('AutoKey.ui', '.')],
+   위와 같이 .ui 파일 포함시키기
+
+5. 소스파일, ui파일, 이미지파일 등 필요한 파일을 .spec 파일이 있는 경로로 이동
+
+6. 경로는 환경에 맞게 수정해서 프롬프트에 입력
+   pyinstaller C:\Users\user\AutoHotKey.spec
+
+7. 해당 경로에 생성된 .exe 파일 사용하면 됨

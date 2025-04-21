@@ -352,6 +352,8 @@ class WindowClass(QMainWindow, form_class):
     def DoubleClickedTrayIcon(self, reson):
         if (reson == QSystemTrayIcon.DoubleClick):
             self.showNormal()
+            self.raise_()
+            self.activateWindow()
 
     def changeEvent(self, event):
         if (event.type() == QEvent.WindowStateChange):
@@ -453,9 +455,29 @@ class WindowClass(QMainWindow, form_class):
             key2 = self.hotKeyList[3][1].text()
             key3 = self.hotKeyList[3][2].text()
         
-        pyautogui.hotkey(key1, key2, key3)
+        keys = [key1, key2, key3]
+        keys = [k.lower() for k in keys if k.lower() != "none"]
 
-        # keyDown은 딜레이가 너무 길어서 hotkey로 변경
+        if keys:
+            # 조합 키를 순서대로 누르기
+            for k in keys[:-1]:
+                pyautogui.keyDown(k)
+            pyautogui.press(keys[-1])  # 마지막 키는 press로
+            for k in reversed(keys[:-1]):
+                pyautogui.keyUp(k)
+        #     print("HotKeyAction 실행됨:", keys)
+        # else:
+        #     print("HotKeyAction: 등록된 키 없음 (모두 none)")
+
+        # ======================================================== #
+        
+        # Ctrl + L 같은 조합키가 동작 안하는 경우에 대응 및 none 예외처리 추가로 위 방식으로 변경 [2차 버전]
+        # pyautogui.hotkey(key1, key2, key3, interval = 0.05)
+        # print(key1, key2, key3);
+
+        # ======================================================== #
+
+        # keyDown은 딜레이가 너무 길어서 hotkey로 변경 [1차 버전]
         # if key1 != "none":
         #     pyautogui.keyDown(key1)
         # if key2 != "none":
@@ -469,6 +491,8 @@ class WindowClass(QMainWindow, form_class):
         #     pyautogui.keyUp(key2)
         # if key3 != "none":
         #     pyautogui.keyUp(key3)
+
+        # ======================================================== #
     
     def GetCurMousePosition(self):
         curX, curY = self.Thread_HotCorner.GetCurMousePosition()
