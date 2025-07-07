@@ -64,7 +64,7 @@ def analyze_multiple_takt_times(log_path, output_csv_path):
     print(f"\n📁 CSV 저장 완료: {output_csv_path}")
 
 # ✅ 파일 경로
-log_file_path = r"C:\Users\kwon\Downloads\MI2\3-1 short\20250417_Event.log"
-csv_output_path = r"C:\Users\kwon\Downloads\MI2\3-1 short\20250417_Event.csv"
+log_file_path = r"C:\Users\kwon\Downloads\MI2\3-1 long 5월10일\event.log"
+csv_output_path = r"C:\Users\kwon\Downloads\MI2\3-1 long 5월10일\event_result.csv"
 
 analyze_multiple_takt_times(log_file_path, csv_output_path)
