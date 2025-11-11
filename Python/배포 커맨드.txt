@@ -47,7 +47,7 @@ pyinstaller E:\Git\Personal\Python\AutoHotCorner_v11.py -F -w --icon=E:\Git\Pers
 
 ========================= 2025.11.11 =========================
 위 내용에서 2번 경로 아래와 같이 해야 함. 아니면 작업표시줄, 트레이에서 아이콘 안들어감.
-pyinstaller E:\Git\Personal\Python\AutoHotCorner_v11.py ^
+pyinstaller E:\Git\Personal\Python\AutoHotCorner_v13_Combo-Condition.py ^
   -F -w ^
   --icon=E:\Git\Personal\Python\AutoHotKeyIcon.ico ^
   --add-data="E:\Git\Personal\Python\AutoHotKeyIcon.ico;."
